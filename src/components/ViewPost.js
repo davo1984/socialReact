@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 // import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 // import { Row, Col, Container, Table } from 'reactstrap';
-import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import {
+    Col, Row,
+    Form, FormGroup, Label, Input, Button, Table, Jumbotron,
+    Card, CardHeader, CardFooter, CardBody, CardText, CardTitle
+} from 'reactstrap';
 
 function ViewPost(props) {
-    props.doingWhat = 'ViewPost';
+    // props.doingWhat = 'ViewPost';
     const [body, setBody] = useState('');
     console.log('in ViewPost', props.postId, props.postsList);
     const commentsList = props.postsList.filter(
@@ -16,17 +20,17 @@ function ViewPost(props) {
         e.preventDefault();
         if (!body) {
             console.log('no comment to submit!');
-            return 
+            return
         }
         let userData = JSON.parse(localStorage.getItem('userData'));
         console.log('in componentDidMount--useEffect');
         const config = {
-            headers:{
+            headers: {
                 // 'content-type': 'multipart/form-data',
                 'Authorization': 'Bearer ' + userData.token,
                 'Accept': 'application/json'
             }
-         };
+        };
 
         let data = {
             post_id: props.postId,
@@ -36,7 +40,7 @@ function ViewPost(props) {
         console.log('userData', userData);
         console.log('axios config', config);
         console.log('axios data', data);
-        
+
         axios.post('http://localhost:8000/api/createComment', data, config)
             .then(response => {
                 console.log('success', response.data);
@@ -51,35 +55,56 @@ function ViewPost(props) {
 
     return (
         <div>
-            <h5 onClick={() => props.setToggle(!props.toggle)}>{
-                commentsList[0].title}</h5>
-            <p>{commentsList[0].user.name}</p>
-            {/* <p>{commentsList[0].title}</p> */}
-            <p>{commentsList[0].body}</p>
-            <p>++++++++++comments below++++++++++</p>
-            {commentsList[0].comments.length > 0 ?
-                commentsList[0].comments.map((comment, key) =>
-                    <p key={key}>{comment.body},{comment.user.name}</p>
-                )
-                :
-                null
-            }
-            <Form onSubmit={submitComment}>
-                <FormGroup>
+            <Row className="my-5">
+            <Col>
+            <Card>
+                <CardHeader tag="h5">{commentsList[0].user.name}</CardHeader>
+                <CardBody>
+                    <CardTitle>{commentsList[0].title}</CardTitle>
+                    <CardText>{commentsList[0].body}</CardText>
+                    {/* <Button>Go somewhere</Button> */}
+                </CardBody>
+                <CardFooter className="text-muted">{commentsList[0].updated_at}</CardFooter>
+            </Card>
+            </Col>
+            </Row>
+            <Row>
+            <Col>
+            <Table responsive striped bordered hover>
+                <thead>Comments</thead>
+                <tbody>
+                    {commentsList[0].comments.length > 0 ?
+                        commentsList[0].comments.map((comment, key) =>
+                            <tr><td key={key}>{comment.body} - {comment.user.name}{" "}{comment.updated_at}</td></tr>)
+                        :
+                        null
+                    }
+                </tbody>
+            </Table>
+            </Col>
+            </Row>
+            <Row>
+                <Col>
+            <Jumbotron>
+                <Form onSubmit={submitComment}>
                     <FormGroup>
-                        <Label for="bodyText">Add Your Comment</Label>
-                        <Input type="textarea"
+                        <FormGroup>
+                            <Label for="bodyText">Add Your Comment</Label>
+                            <Input type="textarea"
                                 onChange={(e) => setBody(e.target.value)}
-                                value={body} 
-                                name="body" 
+                                value={body}
+                                name="body"
                                 id="bodyText" />
-                    </FormGroup>
+                        </FormGroup>
 
-                </FormGroup>
-            </Form>
-            <Button className="mx-auto my-2" color="primary" 
-                    type="submit" 
+                    </FormGroup>
+                </Form>
+                <Button className="mx-auto my-2" color="success"
+                    type="submit"
                     onClick={submitComment}>Submit Comment</Button>
+            </Jumbotron>
+            </Col>
+            </Row>
         </div>
     )
 }

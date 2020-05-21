@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import {
     Card, CardImg, CardTitle, CardText, CardColumns,
-    CardSubtitle, CardBody,
-    Row, Col, Container, Table,
+    CardSubtitle, CardBody, CardHeader, CardFooter,
+    Row, Col, Container, Table, Jumbotron,
     Form, FormGroup, Label, Input, Button
 } from 'reactstrap';
 import ViewPost from './ViewPost';
@@ -11,6 +13,7 @@ import Header from './Header';
 import axios from 'axios';
 
 function ViewStream(props) {
+    const [value, setValue] = useState('');
     const history = useHistory();
     const [postsList, setPostsList] = useState([]);
     const [title, setTitle] = useState('');
@@ -30,10 +33,42 @@ function ViewStream(props) {
         }
     };
 
+    function timerDifference(createdTime) {
+        console.log('createdTime', createdTime);
+        let currentTime = new Date().getTime();
+        let difference = currentTime - createdTime;
+        let days = Math.floor(difference / 86400000);
+        let hours = Math.floor(difference / 3600000);     //milliseconds per hour
+        let minutes = Math.floor(difference / 60000);      //milliseconds per minute    
+
+        if (minutes < 1) {
+            return " Just now";
+        }
+        if (minutes === 1) {
+            return "1 minute ago";
+        }
+        if (minutes < 60) {
+            return minutes + " minutes ago";
+        }
+        if (hours === 1) {
+            return hours + " hour ago";
+        }
+
+        if (hours < 24) {
+            return hours + " hours ago";
+        }
+        if (days === 1) {
+            return days + " day ago"
+        }
+        if (days > 1) {
+            return days + " days ago"
+        }
+
+
+    }
 
 
     // QQQ didn't ian say to get rid of useEffect, not needed?
-    // after render
     useEffect(() => {
         fetchData();
     }, []);
@@ -55,8 +90,24 @@ function ViewStream(props) {
     }
 
     function logoutUser() {
+        let data = {
+            user_id: userData.user.id,
+            headers: { Authorization: 'Bearer ' + userData.token }
+        };
+
+        axios.get('http://localhost:8000/api/logout', data)
+            .then(response => {
+                console.log('success', response);
+                setPostsList(response.data.posts);
+            })
+            .catch(error => {
+                console.log(error);
+                alert(error);
+                // history.push("/Landing");
+            })
+
         localStorage.clear();
-        let userData = {
+        userData = {
             user: null,
             token: null,
             timestamp: null
@@ -101,7 +152,6 @@ function ViewStream(props) {
                 console.log(error);
                 alert(error);
             })
-
     }
 
     console.log('PostsList =', postsList);
@@ -116,7 +166,7 @@ function ViewStream(props) {
 
     return (
         <Container>
-            <Row>
+            <Row className="my-3">
                 <Col>
                     <Header doingWhat={doingWhat}
                         logoutUser={logoutUser}
@@ -126,9 +176,9 @@ function ViewStream(props) {
             </Row>
             {console.log('before toggle', postId)}
             {toggle ?
-                <Row>
+                <Row className="my-2">
                     <Col>
-                        <ViewPost 
+                        <ViewPost
                             doingWhat={doingWhat}
                             postId={postId}
                             setPostsList={setPostsList}
@@ -142,58 +192,57 @@ function ViewStream(props) {
                 <div>
                     <Row>
                         <Col className="mx-auto my-3">
-                            <Form onSubmit={submitPost}>
-                                <FormGroup>
-                                    <Label for="postTitle">Post Title</Label>
-                                    <Input type="text"
-                                        onChange={(e) => setTitle(e.target.value)}
-                                        value={title}
-                                        name="postTitle"
-                                        id="postTitle" />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="postBody">Post Body</Label>
-                                    <Input type="textarea"
-                                        onChange={(e) => setBody(e.target.value)}
-                                        value={body}
-                                        name="postBody"
-                                        id="postBody" />
-                                </FormGroup>
-                                <Button color="primary" type="submit"
-                                    onClick={submitPost}>Submit Your Post</Button>
-                            </Form>
+                            <Jumbotron>
+                                <Form onSubmit={submitPost}>
+                                    <FormGroup>
+                                        <Label for="postTitle">Post Title</Label>
+                                        <Input type="text"
+                                            onChange={(e) => setTitle(e.target.value)}
+                                            value={title}
+                                            name="postTitle"
+                                            id="postTitle" />
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Label for="postBody">Post Body</Label>
+
+                                        <ReactQuill 
+                                            value={body} 
+                                            onChange={setBody}
+                                            type="textarea"
+                                            name="postBody"
+                                            id="postBody" />
+
+                                        {/* <Input type="textarea"
+                                            onChange={(e) => setBody(e.target.value)}
+                                            value={body}
+                                            name="postBody"
+                                            id="postBody" /> */}
+                                    </FormGroup>
+                                    <Button color="primary" type="submit"
+                                        onClick={submitPost}>Submit Your Post</Button>
+                                </Form>
+                            </Jumbotron>
                         </Col>
                     </Row>
                     <Row>
-                        <Col>
-                            <Table responsive striped bordered hover>
-                                <tbody>
-                                    {postsList.length > 0 ? postsList.map((post, key) =>
-                                        <tr><td onClick={() => myfunction(post.id)}>{post.title}</td></tr>
-                                    ) : null}
-                                </tbody>
-                            </Table>
-
-                            <CardColumns>
-                                <Card>
-                                    {/* <CardImg top width="100%" src="/assets/256x186.svg" alt="Card image cap" /> */}
-
-                                    {postsList.length > 0 ? postsList.map((post, key) =>
-                                        <CardBody onClick={() => myfunction(post.id)}>
-                                            <CardTitle>{post.title}</CardTitle>
-                                            <CardSubtitle>Author - Post Age</CardSubtitle>
-                                            <CardText>{post.body}</CardText>
-                                            <Button>Button</Button>
-                                        </CardBody>
-                                    ) : null}
-                                </Card>
-                            </CardColumns>
-
-                        </Col>
+                        {postsList.length > 0 ? postsList.map((post, key) =>
+                            <Col lg="4" md="6" sm="auto" xs="auto">
+                                <div className="card my-3 bg-success" onClick={() => myfunction(post.id)}>
+                                    <div className="card-header bg-secondary">{post.user.name}</div>
+                                    <div className="card-body">
+                                        <h5 className="card-title">{post.title}</h5>
+                                        <p className="card-text">{post.body}</p>
+                                    </div>
+                                    <div className="card-footer bg-secondary">
+                                        {timerDifference(post.updated_at)}
+                                    </div>
+                                </div>
+                            </Col>
+                        ) : null}
                     </Row>
-                </div>
+                </div >
             }
-        </Container>
+        </Container >
     )
 }
 export default ViewStream;
