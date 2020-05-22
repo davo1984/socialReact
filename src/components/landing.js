@@ -15,18 +15,18 @@ function Landing(props) {
     const [confirmPassword, setConfirmPassword] = useState("");
     const history = useHistory();
 
-    const userData = JSON.parse( localStorage.getItem( 'userData' ));
-    if ( userData != null ) {
-        if ( userData.user != null ) {
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    if (userData != null) {
+        if (userData.user != null) {
             props.setPageId(1);
         }
     }
 
     const { className } = props;
-    const [ registerModal, setRegisterModal ] = useState(false);
-    const toggleRegister = () => setRegisterModal( !registerModal );
-    const [ loginModal, setLoginModal ] = useState(false);
-    const toggleLogin = () => setLoginModal( !loginModal );
+    const [registerModal, setRegisterModal] = useState(false);
+    const toggleRegister = () => setRegisterModal(!registerModal);
+    const [loginModal, setLoginModal] = useState(false);
+    const toggleLogin = () => setLoginModal(!loginModal);
 
     const cancelRegister = () => {
         setName("");
@@ -50,7 +50,7 @@ function Landing(props) {
         };
         const data = { name: name, email: email, password: password };
         console.log('in handleRegister: data', data);
-        axios.post( DATABASE + '/api/register', data)
+        axios.post(DATABASE + '/api/register', data)
             .then(response => {
                 // setRegisterModal(!registerModal);
                 // setLoginModal(!loginModal);
@@ -80,7 +80,7 @@ function Landing(props) {
         console.log(email, password);
         const data = { email: email, password: password };
 
-        axios.post( DATABASE + '/api/login', data )
+        axios.post(DATABASE + '/api/login', data)
             .then(response => {
                 let userData = {
                     user: response.data.user,
@@ -163,7 +163,7 @@ function Landing(props) {
                                 placeholder="Enter User Name"
                             />
                             <small id="nameHelp" className="form-text text-muted">This will be your Screen Name,
-                                what everybody will see as you. You can change it at any time!
+                            what everybody will see as you. You can change it at any time!
                             </small>
                         </div>
 
