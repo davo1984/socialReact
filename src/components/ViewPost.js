@@ -40,7 +40,6 @@ function ViewPost(props) {
         console.log('userData', userData);
         console.log('axios config', config);
         console.log('axios data', data);
-
         axios.post('http://localhost:8000/api/createComment', data, config)
             .then(response => {
                 console.log('success', response.data);

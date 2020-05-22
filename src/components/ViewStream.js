@@ -152,6 +152,7 @@ function ViewStream(props) {
                 console.log(error);
                 alert(error);
             })
+<<<<<<< HEAD
     }
 
     console.log('PostsList =', postsList);
@@ -162,6 +163,14 @@ function ViewStream(props) {
     const [ toggle , setToggle ] = useState(false);
     const [ postId , setPostId ] = useState(0);
 >>>>>>> working on ViewPost
+=======
+
+    }
+
+    console.log('PostsList =', postsList);
+    let [toggle, setToggle] = useState(false);
+    let [postId, setPostId] = useState(0);
+>>>>>>> fixed register bugs
 
     const myfunction = (props) => {
         console.log('in function', props);
@@ -171,13 +180,19 @@ function ViewStream(props) {
 
     return (
         <Container>
+<<<<<<< HEAD
             <Row className="my-3">
                 <Col>
 <<<<<<< HEAD
+=======
+            <Row>
+                <Col>
+>>>>>>> fixed register bugs
                     <Header doingWhat={doingWhat}
                         logoutUser={logoutUser}
                         setPageId={props.setPageId}
                     />
+<<<<<<< HEAD
 =======
                     {console.log('before toggle', postsList.id)}
                     {toggle ? 
@@ -193,13 +208,21 @@ function ViewStream(props) {
                     </Table>
                     }
 >>>>>>> working on ViewPost
+=======
+>>>>>>> fixed register bugs
                 </Col>
             </Row>
             {console.log('before toggle', postId)}
             {toggle ?
+<<<<<<< HEAD
                 <Row className="my-2">
                     <Col>
                         <ViewPost
+=======
+                <Row>
+                    <Col>
+                        <ViewPost 
+>>>>>>> fixed register bugs
                             doingWhat={doingWhat}
                             postId={postId}
                             setPostsList={setPostsList}
@@ -213,6 +236,7 @@ function ViewStream(props) {
                 <div>
                     <Row>
                         <Col className="mx-auto my-3">
+<<<<<<< HEAD
                             <Jumbotron>
                                 <Form onSubmit={submitPost}>
                                     <FormGroup>
@@ -264,6 +288,60 @@ function ViewStream(props) {
                 </div >
             }
         </Container >
+=======
+                            <Form onSubmit={submitPost}>
+                                <FormGroup>
+                                    <Label for="postTitle">Post Title</Label>
+                                    <Input type="text"
+                                        onChange={(e) => setTitle(e.target.value)}
+                                        value={title}
+                                        name="postTitle"
+                                        id="postTitle" />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label for="postBody">Post Body</Label>
+                                    <Input type="textarea"
+                                        onChange={(e) => setBody(e.target.value)}
+                                        value={body}
+                                        name="postBody"
+                                        id="postBody" />
+                                </FormGroup>
+                                <Button color="primary" type="submit"
+                                    onClick={submitPost}>Submit Your Post</Button>
+                            </Form>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Table responsive striped bordered hover>
+                                <tbody>
+                                    {postsList.length > 0 ? postsList.map((post, key) =>
+                                        <tr><td onClick={() => myfunction(post.id)}>{post.title}</td></tr>
+                                    ) : null}
+                                </tbody>
+                            </Table>
+
+                            <CardColumns>
+                                <Card>
+                                    {/* <CardImg top width="100%" src="/assets/256x186.svg" alt="Card image cap" /> */}
+
+                                    {postsList.length > 0 ? postsList.map((post, key) =>
+                                        <CardBody onClick={() => myfunction(post.id)}>
+                                            <CardTitle>{post.title}</CardTitle>
+                                            <CardSubtitle>Author - Post Age</CardSubtitle>
+                                            <CardText>{post.body}</CardText>
+                                            <Button>Button</Button>
+                                        </CardBody>
+                                    ) : null}
+                                </Card>
+                            </CardColumns>
+
+                        </Col>
+                    </Row>
+                </div>
+            }
+        </Container>
+>>>>>>> fixed register bugs
     )
 }
 <<<<<<< HEAD
