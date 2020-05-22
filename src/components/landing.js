@@ -8,25 +8,25 @@ import { Form, Modal, ModalHeader, ModalBody } from 'reactstrap';
 
 function Landing(props) {
     // const [pageId, setPageId] = useState(0);
+    const DATABASE = "https://social-node-277819.uc.r.appspot.com";
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const history = useHistory();
 
-    // if logged in GOTO ViewStream
-    const userData = JSON.parse(localStorage.getItem('userData'));
-    if (userData != null) {
-        if (userData.user != null) {
+    const userData = JSON.parse( localStorage.getItem( 'userData' ));
+    if ( userData != null ) {
+        if ( userData.user != null ) {
             props.setPageId(1);
         }
     }
 
     const { className } = props;
-    const [registerModal, setRegisterModal] = useState(false);
-    const toggleRegister = () => setRegisterModal(!registerModal);
-    const [loginModal, setLoginModal] = useState(false);
-    const toggleLogin = () => setLoginModal(!loginModal);
+    const [ registerModal, setRegisterModal ] = useState(false);
+    const toggleRegister = () => setRegisterModal( !registerModal );
+    const [ loginModal, setLoginModal ] = useState(false);
+    const toggleLogin = () => setLoginModal( !loginModal );
 
     const cancelRegister = () => {
         setName("");
@@ -50,7 +50,7 @@ function Landing(props) {
         };
         const data = { name: name, email: email, password: password };
         console.log('in handleRegister: data', data);
-        axios.post('http://localhost:8000/api/register', data)
+        axios.post( DATABASE + '/api/register', data)
             .then(response => {
                 // setRegisterModal(!registerModal);
                 // setLoginModal(!loginModal);
@@ -80,7 +80,7 @@ function Landing(props) {
         console.log(email, password);
         const data = { email: email, password: password };
 
-        axios.post('http://localhost:8000/api/login', data)
+        axios.post( DATABASE + '/api/login', data )
             .then(response => {
                 let userData = {
                     user: response.data.user,

@@ -76,8 +76,7 @@ function ViewStream(props) {
     async function fetchData() {
 
         console.log('in fetchData: userData, data', userData, data);
-        // axios get
-        axios.get('http://localhost:8000/api/post', data)
+        axios.get(DATABASE+'/api/post', data)
             .then(response => {
                 console.log('success', response);
                 setPostsList(response.data.posts);
@@ -141,7 +140,7 @@ function ViewStream(props) {
         console.log('axios config', config);
         console.log('axios data', data);
 
-        axios.post('http://localhost:8000/api/createPost', data, config)
+        axios.post(DATABASE+'/api/createPost', data, config)
             .then(response => {
                 console.log('success', response.data);
                 setBody('');
