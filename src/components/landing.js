@@ -16,20 +16,32 @@ function Landing(props) {
 
     // if logged in GOTO ViewStream
     const userData = JSON.parse(localStorage.getItem('userData'));
-    if (userData) {
-        props.setPageId(1);
+    if (userData != null) {
+        if (userData.user != null) {
+            props.setPageId(1);
+        }
     }
 
-    // modal
     const { className } = props;
     const [registerModal, setRegisterModal] = useState(false);
     const toggleRegister = () => setRegisterModal(!registerModal);
     const [loginModal, setLoginModal] = useState(false);
     const toggleLogin = () => setLoginModal(!loginModal);
-    const cancelRegister = () => setRegisterModal(history.push("/"));
-    const cancelLogin = () => setLoginModal(history.push("/"));
-    // const cancelLogin = () => props.setPageId(0);
-    // modal
+
+    const cancelRegister = () => {
+        setName("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setRegisterModal(history.push("/"));
+    }
+
+    const cancelLogin = () => {
+        setEmail("");
+        setPassword("");
+        console.log('cancel login');
+        setLoginModal(history.push("/"));
+    }
 
     const handleRegister = (e) => {
         e.preventDefault();
@@ -37,22 +49,27 @@ function Landing(props) {
             return (alert('Password does not equal Confirm Password.  Consider using a password manager'));
         };
         const data = { name: name, email: email, password: password };
-        // console.log(data);
+        console.log('in handleRegister: data', data);
         axios.post('http://localhost:8000/api/register', data)
             .then(response => {
                 // setRegisterModal(!registerModal);
                 // setLoginModal(!loginModal);
+                console.log('successful register: response', response);
                 let userData = {
                     user: response.data.user,
                     token: response.data.token,
                     timestamp: new Date().toString()
                 };
                 localStorage.setItem('userData', JSON.stringify(userData));
-                console.log(JSON.stringify(userData));
+                console.log('in register: userData', JSON.stringify(userData));
+                setName('');
+                setEmail('');
+                setPassword('');
+                setConfirmPassword('');
                 props.setPageId(1);
-                // history.push("/viewStream");
             })
             .catch(error => {
+                console.log(error);
                 alert(error);
                 history.push("/");
             });
@@ -75,9 +92,15 @@ function Landing(props) {
 
                 // Convert the object into JSON string and save it into storage
                 localStorage.setItem('userData', JSON.stringify(userData));
-                console.log(JSON.stringify(userData));
+                console.log('in login: userData', JSON.stringify(userData));
+                setEmail('');
+                setPassword('');
+                if (userData.user.token) {
+                    props.setPageId(1);
+                } else {
+                    history.push("/");
+                }
                 props.setPageId(1);
-                // history.push("/viewStream");
             })
             .catch(error => {
                 console.log(error);
@@ -128,8 +151,6 @@ function Landing(props) {
             <Modal isOpen={registerModal} toggleRegister={toggleRegister} className={className}>
                 <ModalHeader toggleRegister={toggleRegister}>Create an Account</ModalHeader>
                 <ModalBody centered>
-                    <Form onSubmit={handleRegister}></Form>
-                    {/* <Button color="primary" onClick={toggleRegister}>Do Something</Button>{' '} */}
                     <Form onSubmit={handleRegister}>
                         <div className="form-group text-left">
                             <label htmlFor="name">User Name</label>
@@ -142,7 +163,7 @@ function Landing(props) {
                                 placeholder="Enter User Name"
                             />
                             <small id="nameHelp" className="form-text text-muted">This will be your Screen Name,
-                            what everybody will see as you. You can change it at any time!
+                                what everybody will see as you. You can change it at any time!
                             </small>
                         </div>
 
@@ -214,7 +235,7 @@ function Landing(props) {
                             <label htmlFor="password">Password</label>
                             <input type="password"
                                 onChange={(e) => setPassword(e.target.value)}
-                                value={password}
+                                // value={password}
                                 name="password"
                                 className="form-control"
                                 id="password"
@@ -223,7 +244,8 @@ function Landing(props) {
                         </div>
                         <Button color="primary" type="submit" onClick={handleLogin}>Login</Button>{' '}
                         {/* <Button color="primary" onClick={toggleLogin}>Do Something</Button>{' '} */}
-                        <Button color="secondary" isOpen={loginModal} toggleLogin={toggleRegister} onClick={cancelLogin}>Cancel</Button>
+                        <Button color="secondary"
+                            onClick={cancelLogin}>Cancel</Button>
                     </Form>
                 </ModalBody>
             </Modal>

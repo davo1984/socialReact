@@ -155,8 +155,13 @@ function ViewStream(props) {
     }
 
     console.log('PostsList =', postsList);
+<<<<<<< HEAD
     let [toggle, setToggle] = useState(false);
     let [postId, setPostId] = useState(0);
+=======
+    const [ toggle , setToggle ] = useState(false);
+    const [ postId , setPostId ] = useState(0);
+>>>>>>> working on ViewPost
 
     const myfunction = (props) => {
         console.log('in function', props);
@@ -168,10 +173,26 @@ function ViewStream(props) {
         <Container>
             <Row className="my-3">
                 <Col>
+<<<<<<< HEAD
                     <Header doingWhat={doingWhat}
                         logoutUser={logoutUser}
                         setPageId={props.setPageId}
                     />
+=======
+                    {console.log('before toggle', postsList.id)}
+                    {toggle ? 
+                        <ViewPost postId={PostId} postsList={postsList} 
+                            setToggle={setToggle} myfunction={myfunction}/>
+                        :
+                    <Table responsive striped bordered hover>
+                        <tbody>
+                            {postsList.length > 0 ? postsList.map((post, key) =>
+                                <tr><td onClick={()=>myfunction(post.id)}>{post.title}</td></tr>
+                            ):null }
+                        </tbody>
+                    </Table>
+                    }
+>>>>>>> working on ViewPost
                 </Col>
             </Row>
             {console.log('before toggle', postId)}
@@ -245,4 +266,8 @@ function ViewStream(props) {
         </Container >
     )
 }
+<<<<<<< HEAD
 export default ViewStream;
+=======
+export default ViewStream;
+>>>>>>> working on ViewPost
