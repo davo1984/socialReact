@@ -142,7 +142,7 @@ function Landing(props) {
                                 placeholder="Enter User Name"
                             />
                             <small id="nameHelp" className="form-text text-muted">This will be your Screen Name,
-                                what everybody will see as you. You can change it at any time!
+                            what everybody will see as you. You can change it at any time!
                             </small>
                         </div>
 
@@ -227,7 +227,7 @@ function Landing(props) {
                     </Form>
                 </ModalBody>
             </Modal>
-            
+
         </Container>
     );
 }
