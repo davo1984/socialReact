@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import {
     Card, CardImg, CardTitle, CardText, CardColumns,
-    CardSubtitle, CardBody, CardHeader, CardFooter,
-    Row, Col, Container, Table, Jumbotron,
+    CardSubtitle, CardBody,
+    Row, Col, Container, Table,
     Form, FormGroup, Label, Input, Button
 } from 'reactstrap';
 import ViewPost from './ViewPost';
@@ -13,7 +11,7 @@ import Header from './Header';
 import axios from 'axios';
 
 function ViewStream(props) {
-    const [value, setValue] = useState('');
+    const DATABASE = "https://social-node-277819.uc.r.appspot.com/";
     const history = useHistory();
     const [postsList, setPostsList] = useState([]);
     const [title, setTitle] = useState('');
@@ -33,42 +31,10 @@ function ViewStream(props) {
         }
     };
 
-    function timerDifference(createdTime) {
-        console.log('createdTime', createdTime);
-        let currentTime = new Date().getTime();
-        let difference = currentTime - createdTime;
-        let days = Math.floor(difference / 86400000);
-        let hours = Math.floor(difference / 3600000);     //milliseconds per hour
-        let minutes = Math.floor(difference / 60000);      //milliseconds per minute    
-
-        if (minutes < 1) {
-            return " Just now";
-        }
-        if (minutes === 1) {
-            return "1 minute ago";
-        }
-        if (minutes < 60) {
-            return minutes + " minutes ago";
-        }
-        if (hours === 1) {
-            return hours + " hour ago";
-        }
-
-        if (hours < 24) {
-            return hours + " hours ago";
-        }
-        if (days === 1) {
-            return days + " day ago"
-        }
-        if (days > 1) {
-            return days + " days ago"
-        }
-
-
-    }
 
 
     // QQQ didn't ian say to get rid of useEffect, not needed?
+    // after render
     useEffect(() => {
         fetchData();
     }, []);
@@ -76,7 +42,7 @@ function ViewStream(props) {
     async function fetchData() {
 
         console.log('in fetchData: userData, data', userData, data);
-        axios.get(DATABASE+'/api/post', data)
+        axios.get(DATABASE + '/api/post', data)
             .then(response => {
                 console.log('success', response);
                 setPostsList(response.data.posts);
@@ -89,24 +55,8 @@ function ViewStream(props) {
     }
 
     function logoutUser() {
-        let data = {
-            user_id: userData.user.id,
-            headers: { Authorization: 'Bearer ' + userData.token }
-        };
-
-        axios.get('http://localhost:8000/api/logout', data)
-            .then(response => {
-                console.log('success', response);
-                setPostsList(response.data.posts);
-            })
-            .catch(error => {
-                console.log(error);
-                alert(error);
-                // history.push("/Landing");
-            })
-
         localStorage.clear();
-        userData = {
+        let userData = {
             user: null,
             token: null,
             timestamp: null
@@ -140,7 +90,7 @@ function ViewStream(props) {
         console.log('axios config', config);
         console.log('axios data', data);
 
-        axios.post(DATABASE+'/api/createPost', data, config)
+        axios.post(DATABASE + '/api/createPost', data, config)
             .then(response => {
                 console.log('success', response.data);
                 setBody('');
@@ -151,25 +101,12 @@ function ViewStream(props) {
                 console.log(error);
                 alert(error);
             })
-<<<<<<< HEAD
-    }
-
-    console.log('PostsList =', postsList);
-<<<<<<< HEAD
-    let [toggle, setToggle] = useState(false);
-    let [postId, setPostId] = useState(0);
-=======
-    const [ toggle , setToggle ] = useState(false);
-    const [ postId , setPostId ] = useState(0);
->>>>>>> working on ViewPost
-=======
 
     }
 
     console.log('PostsList =', postsList);
     let [toggle, setToggle] = useState(false);
     let [postId, setPostId] = useState(0);
->>>>>>> fixed register bugs
 
     const myfunction = (props) => {
         console.log('in function', props);
@@ -179,49 +116,19 @@ function ViewStream(props) {
 
     return (
         <Container>
-<<<<<<< HEAD
-            <Row className="my-3">
-                <Col>
-<<<<<<< HEAD
-=======
             <Row>
                 <Col>
->>>>>>> fixed register bugs
                     <Header doingWhat={doingWhat}
                         logoutUser={logoutUser}
                         setPageId={props.setPageId}
                     />
-<<<<<<< HEAD
-=======
-                    {console.log('before toggle', postsList.id)}
-                    {toggle ? 
-                        <ViewPost postId={PostId} postsList={postsList} 
-                            setToggle={setToggle} myfunction={myfunction}/>
-                        :
-                    <Table responsive striped bordered hover>
-                        <tbody>
-                            {postsList.length > 0 ? postsList.map((post, key) =>
-                                <tr><td onClick={()=>myfunction(post.id)}>{post.title}</td></tr>
-                            ):null }
-                        </tbody>
-                    </Table>
-                    }
->>>>>>> working on ViewPost
-=======
->>>>>>> fixed register bugs
                 </Col>
             </Row>
             {console.log('before toggle', postId)}
             {toggle ?
-<<<<<<< HEAD
-                <Row className="my-2">
-                    <Col>
-                        <ViewPost
-=======
                 <Row>
                     <Col>
-                        <ViewPost 
->>>>>>> fixed register bugs
+                        <ViewPost
                             doingWhat={doingWhat}
                             postId={postId}
                             setPostsList={setPostsList}
@@ -235,59 +142,6 @@ function ViewStream(props) {
                 <div>
                     <Row>
                         <Col className="mx-auto my-3">
-<<<<<<< HEAD
-                            <Jumbotron>
-                                <Form onSubmit={submitPost}>
-                                    <FormGroup>
-                                        <Label for="postTitle">Post Title</Label>
-                                        <Input type="text"
-                                            onChange={(e) => setTitle(e.target.value)}
-                                            value={title}
-                                            name="postTitle"
-                                            id="postTitle" />
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <Label for="postBody">Post Body</Label>
-
-                                        <ReactQuill 
-                                            value={body} 
-                                            onChange={setBody}
-                                            type="textarea"
-                                            name="postBody"
-                                            id="postBody" />
-
-                                        {/* <Input type="textarea"
-                                            onChange={(e) => setBody(e.target.value)}
-                                            value={body}
-                                            name="postBody"
-                                            id="postBody" /> */}
-                                    </FormGroup>
-                                    <Button color="primary" type="submit"
-                                        onClick={submitPost}>Submit Your Post</Button>
-                                </Form>
-                            </Jumbotron>
-                        </Col>
-                    </Row>
-                    <Row>
-                        {postsList.length > 0 ? postsList.map((post, key) =>
-                            <Col lg="4" md="6" sm="auto" xs="auto">
-                                <div className="card my-3 bg-success" onClick={() => myfunction(post.id)}>
-                                    <div className="card-header bg-secondary">{post.user.name}</div>
-                                    <div className="card-body">
-                                        <h5 className="card-title">{post.title}</h5>
-                                        <p className="card-text">{post.body}</p>
-                                    </div>
-                                    <div className="card-footer bg-secondary">
-                                        {timerDifference(post.updated_at)}
-                                    </div>
-                                </div>
-                            </Col>
-                        ) : null}
-                    </Row>
-                </div >
-            }
-        </Container >
-=======
                             <Form onSubmit={submitPost}>
                                 <FormGroup>
                                     <Label for="postTitle">Post Title</Label>
@@ -340,11 +194,6 @@ function ViewStream(props) {
                 </div>
             }
         </Container>
->>>>>>> fixed register bugs
     )
 }
-<<<<<<< HEAD
 export default ViewStream;
-=======
-export default ViewStream;
->>>>>>> working on ViewPost
