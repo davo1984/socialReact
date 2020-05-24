@@ -9,6 +9,10 @@ import {
 } from 'reactstrap';
 
 function ViewPost(props) {
+    // also change DATABASE in ViewStream.js Landing.js
+    const DATABASE = "http://localhost:8000";
+    // const DATABASE = "https://social-node-277819.uc.r.appspot.com";
+
     // props.doingWhat = 'ViewPost';
     const [body, setBody] = useState('');
     console.log('in ViewPost', props.postId, props.postsList);
@@ -40,7 +44,7 @@ function ViewPost(props) {
         console.log('userData', userData);
         console.log('axios config', config);
         console.log('axios data', data);
-        axios.post('http://localhost:8000/api/createComment', data, config)
+        axios.post(DATABASE+'/api/createComment', data, config)
             .then(response => {
                 console.log('success', response.data);
                 setBody('');
