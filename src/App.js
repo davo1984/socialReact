@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container } from 'reactstrap';
-import { Switch, Route } from 'react-router-dom';
+// import { Switch, Route } from 'react-router-dom';
 import ViewStream from './components/ViewStream';
 // import Register from './components/Register';
 // import Post from './components/Post';
@@ -14,12 +14,12 @@ function App() {
     // send postid to post component
     // send posts to post component & send down as a prop
     //      setPageId(response.data.posts);
-    if (pageId == 1) {
+    if (pageId === 1) {
         return (<ViewStream setPageId={setPageId} />)
-    } if (pageId == 0) {
+    } if (pageId === 0) {
         return (<Landing setPageId={setPageId}/>)
-    } if (pageId == 3) {
-        return (<ViewStream postId={3} SetPageId={setPageId} />)
+    } if (pageId === 3) {
+        return (<ViewStream postId={3} setPageId={setPageId} />)
     }
 
     return (

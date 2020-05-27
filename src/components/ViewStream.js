@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
-    Card, CardImg, CardTitle, CardText, CardColumns,
-    CardSubtitle, CardBody,
-    Row, Col, Container, Table,
+    Row, Col, Container,
     Form, FormGroup, Label, Input, Button
 } from 'reactstrap';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import ViewPost from './ViewPost';
 import Header from './Header';
 import axios from 'axios';
@@ -131,6 +131,7 @@ function ViewStream(props) {
                 <Row>
                     <Col>
                         <ViewPost
+                            setPageId={props.setPageId} 
                             doingWhat={doingWhat}
                             postId={postId}
                             setPostsList={setPostsList}
@@ -155,11 +156,15 @@ function ViewStream(props) {
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="postBody">Post Body</Label>
-                                    <Input type="textarea"
-                                        onChange={(e) => setBody(e.target.value)}
-                                        value={body}
-                                        name="postBody"
-                                        id="postBody" />
+                                    <ReactQuill>
+                                        <div style={{height: 9+'rem'}}
+                                            type="textarea"
+                                            theme="snow" 
+                                            value={body} 
+                                            name="postBody"
+                                            id="postBody"
+                                            onChange={setBody}/>
+                                    </ReactQuill> 
                                 </FormGroup>
                                 <Button color="primary" type="submit"
                                     onClick={submitPost}>Submit Your Post</Button>
@@ -167,31 +172,23 @@ function ViewStream(props) {
                         </Col>
                     </Row>
                     <Row>
-                        <Col>
-                            <Table responsive striped bordered hover>
-                                <tbody>
-                                    {postsList.length > 0 ? postsList.map((post, key) =>
-                                        <tr><td onClick={() => myfunction(post.id)}>{post.title}</td></tr>
-                                    ) : null}
-                                </tbody>
-                            </Table>
-
-                            <CardColumns>
-                                <Card>
-                                    {/* <CardImg top width="100%" src="/assets/256x186.svg" alt="Card image cap" /> */}
-
-                                    {postsList.length > 0 ? postsList.map((post, key) =>
-                                        <CardBody onClick={() => myfunction(post.id)}>
-                                            <CardTitle>{post.title}</CardTitle>
-                                            <CardSubtitle>Author - Post Age</CardSubtitle>
-                                            <CardText>{post.body}</CardText>
-                                            <Button>Button</Button>
-                                        </CardBody>
-                                    ) : null}
-                                </Card>
-                            </CardColumns>
-
-                        </Col>
+                        {/* {console.log('postsList')} */}
+                        {postsList.length > 0 ? postsList.map((post, key) =>
+                            <div lg="4" md="6" sm="auto" xs="auto"
+                                key={key}
+                                style={{ minWidth: 12 + 'rem', maxWidth: 18 + 'rem' }}
+                                className="card m-2"
+                                onClick={() => myfunction(post.id)}>
+                                <div className="card-header bg-success">{post.title}</div>
+                                <div className="card-body bg-light">
+                                    <div
+                                        dangerouslySetInnerHTML={{
+                                            __html: post.body
+                                        }}></div>
+                                </div>
+                                <div className="card-footer bg-success">{post.user.name}</div>
+                            </div>
+                        ) : null}
                     </Row>
                 </div>
             }

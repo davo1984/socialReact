@@ -3,12 +3,15 @@ import React, { useState } from 'react';
 import axios from 'axios';
 // import { Row, Col, Container, Table } from 'reactstrap';
 import {
-    Col, Row,
+    Col, Row, 
     Form, FormGroup, Label, Input, Button, Table, Jumbotron,
     Card, CardHeader, CardFooter, CardBody, CardText, CardTitle
 } from 'reactstrap';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 function ViewPost(props) {
+    const [value, setValue] = useState('');
     // also change DATABASE in ViewStream.js Landing.js
     const DATABASE = "http://localhost:8000";
     // const DATABASE = "https://social-node-277819.uc.r.appspot.com";
@@ -53,7 +56,8 @@ function ViewPost(props) {
             .catch(error => {
                 console.log(error);
                 alert(error);
-            })
+            });
+        props.setPageId(1);
     }
 
     return (
@@ -63,8 +67,15 @@ function ViewPost(props) {
             <Card>
                 <CardHeader tag="h5">{commentsList[0].user.name}</CardHeader>
                 <CardBody>
-                    <CardTitle>{commentsList[0].title}</CardTitle>
-                    <CardText>{commentsList[0].body}</CardText>
+                    <CardTitle>
+                    <div dangerouslySetInnerHTML={{
+                        __html: commentsList[0].title
+                    }}></div>
+                    </CardTitle>
+                    <CardText><div dangerouslySetInnerHTML={{
+                        __html: commentsList[0].body
+                    }}></div>
+                    </CardText>
                     {/* <Button>Go somewhere</Button> */}
                 </CardBody>
                 <CardFooter className="text-muted">{commentsList[0].updated_at}</CardFooter>
@@ -78,7 +89,12 @@ function ViewPost(props) {
                 <tbody>
                     {commentsList[0].comments.length > 0 ?
                         commentsList[0].comments.map((comment, key) =>
-                            <tr><td key={key}>{comment.body} - {comment.user.name}{" "}{comment.updated_at}</td></tr>)
+                            <tr><td key={key}>
+                                <div
+                                        dangerouslySetInnerHTML={{
+                                            __html: comment.body
+                                        }}></div>
+                                 - {comment.user.name}{" "}{comment.updated_at}</td></tr>)
                         :
                         null
                     }
@@ -93,11 +109,19 @@ function ViewPost(props) {
                     <FormGroup>
                         <FormGroup>
                             <Label for="bodyText">Add Your Comment</Label>
-                            <Input type="textarea"
+                            <ReactQuill>
+                                <div style={{height: 9+'rem'}}
+                                        theme="snow" 
+                                        value={body} 
+                                        name="bodyText"
+                                        id="bodyText"
+                                        onChange={setBody}/>
+                            </ReactQuill>
+                            {/* <Input type="textarea"
                                 onChange={(e) => setBody(e.target.value)}
                                 value={body}
                                 name="body"
-                                id="bodyText" />
+                                id="bodyText" /> */}
                         </FormGroup>
 
                     </FormGroup>
