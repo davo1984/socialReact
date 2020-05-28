@@ -103,7 +103,6 @@ function ViewStream(props) {
                 console.log(error);
                 alert(error);
             })
-
     }
 
     console.log('PostsList =', postsList);
@@ -121,6 +120,7 @@ function ViewStream(props) {
             <Row>
                 <Col>
                     <Header doingWhat={doingWhat}
+                        userName={userData.user.name}
                         logoutUser={logoutUser}
                         setPageId={props.setPageId}
                     />
@@ -155,16 +155,16 @@ function ViewStream(props) {
                                         id="postTitle" />
                                 </FormGroup>
                                 <FormGroup>
-                                    <Label for="postBody">Post Body</Label>
-                                    <ReactQuill>
-                                        <div style={{height: 9+'rem'}}
+                                    <Label for="postBody">Have your say</Label>
+                                    <ReactQuill 
+                                            style={{ height: 9 +'rem', marginBottom: 3+'rem'  }}
                                             type="textarea"
                                             theme="snow" 
                                             value={body} 
                                             name="postBody"
                                             id="postBody"
-                                            onChange={setBody}/>
-                                    </ReactQuill> 
+                                            onChange={setBody}></ReactQuill>
+                                    {/* </ReactQuill>  */}
                                 </FormGroup>
                                 <Button color="primary" type="submit"
                                     onClick={submitPost}>Submit Your Post</Button>

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {
     Navbar,
     NavbarBrand,
     Nav,
     NavLink,
+    NavItem,
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
@@ -15,11 +16,12 @@ import {
 function Header(props) {
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
+    const history = useHistory();
 
     return (
         <>
             <Navbar color="info" light expand="md" className="border-rounded" fixed="top">
-                <NavbarBrand href="/">David's Node</NavbarBrand>
+                <NavbarBrand href="/">Social Node</NavbarBrand>
                 <Nav className="mr-auto" navbar>
                     {/* {postsList.length > 0 ? postsList.map((post, key) =>
                                         <tr><td onClick={() => myfunction(post.id)}>{post.title}</td></tr>
@@ -48,11 +50,11 @@ function Header(props) {
                     </UncontrolledDropdown>
                 </Nav>
                 <NavbarText>
-                    {/* <NavItem>
-                        </NavItem> */}
-                        <NavLink
+                    <NavItem>Welcome {props.userName}
+                        </NavItem>
+                        {/* <NavLink
                             onClick={() => props.logoutUser()}>Logout
-                        </NavLink>
+                        </NavLink> */}
                 </NavbarText>
             </Navbar>
         </>
