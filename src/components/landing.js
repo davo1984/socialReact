@@ -71,7 +71,7 @@ function Landing(props) {
                 props.setPageId(1);
             })
             .catch(error => {
-                console.log(error);
+                console.log(error, data);
                 alert(error);
                 history.push("/");
             });
@@ -105,7 +105,7 @@ function Landing(props) {
                 props.setPageId(1);
             })
             .catch(error => {
-                console.log(error);
+                console.log(error, data);
             });
     }
 
