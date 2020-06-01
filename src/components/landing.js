@@ -9,8 +9,8 @@ import { Form, Modal, ModalHeader, ModalBody } from 'reactstrap';
 function Landing(props) {
     // const [pageId, setPageId] = useState(0);
     // also change DATABASE in ViewStream.js ViewPost.js
-    const DATABASE = "http://localhost:8000";
-    // const DATABASE = "https://social-node-277819.uc.r.appspot.com";
+    // const DATABASE = "http://localhost:8000";
+    const DATABASE = "https://social-node-277819.uc.r.appspot.com";
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
@@ -52,7 +52,7 @@ function Landing(props) {
         };
         const data = { name: name, email: email, password: password };
         console.log('in handleRegister: data', data);
-        axios.post(DATABASE + '/api/register', data)
+        axios.post(DATABASE + '/api/register', data, email, password, DATABASE)
             .then(response => {
                 // setRegisterModal(!registerModal);
                 // setLoginModal(!loginModal);
@@ -79,8 +79,8 @@ function Landing(props) {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        console.log(email, password);
         const data = { email: email, password: password };
+        console.log( email, password, DATABASE, data );
 
         axios.post(DATABASE + '/api/login', data)
             .then(response => {
