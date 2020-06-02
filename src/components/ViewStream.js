@@ -13,7 +13,7 @@ import axios from 'axios';
 function ViewStream(props) {
     // also change DATABASE in Landing.js ViewPost.js
     // const DATABASE = "http://localhost:8000";
-    const DATABASE = "https://social-node-277819.uc.r.appspot.com/";
+    const DATABASE = "https://social-278718.appspot.com";
     const history = useHistory();
     const [postsList, setPostsList] = useState([]);
     const [title, setTitle] = useState('');

@@ -15,7 +15,7 @@ function ViewPost(props) {
     const history = useHistory();
     // also change DATABASE in ViewStream.js Landing.js
     // const DATABASE = "http://localhost:8000";
-    const DATABASE = "https://social-node-277819.uc.r.appspot.com";
+    const DATABASE = "https://social-278718.appspot.com";
 
     // props.doingWhat = 'ViewPost';
     let [commentBody, setCommentBody] = useState('');

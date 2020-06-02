@@ -10,7 +10,7 @@ function Landing(props) {
     // const [pageId, setPageId] = useState(0);
     // also change DATABASE in ViewStream.js ViewPost.js
     // const DATABASE = "http://localhost:8000";
-    const DATABASE = "https://social-node-277819.uc.r.appspot.com";
+    const DATABASE = "https://social-278718.appspot.com";
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
