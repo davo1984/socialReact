@@ -14,6 +14,10 @@ function App() {
     // send postid to post component
     // send posts to post component & send down as a prop
     //      setPageId(response.data.posts);
+
+    // TODO rewrite this to use react router properly.
+    // Kelly has some example code where it hides the function called from the URL bar.
+    
     if (pageId === 1) {
         return (<ViewStream setPageId={setPageId} />)
     } if (pageId === 0) {

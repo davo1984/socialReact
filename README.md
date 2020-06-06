@@ -1,3 +1,9 @@
+# Distributed Social Networking Node
+
+This is the React frontend of a social networking node of the Fediverse. Diaspora* to be specific. My plan is to write the entire node myself rather than to use and modify their code. Eventually I want to add in the API calls to pass real data (posts, comments, hashtags, etc) with other nodes. 
+
+Not sure if I will allow other users on or it will just be my own private node.  It doesn't have to have full functionallity to make me happy, it just has to integrate with the wider distributed Fediverse!
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
